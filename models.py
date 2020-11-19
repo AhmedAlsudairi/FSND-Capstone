@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, create_engine
+from sqlalchemy import Column, String, create_engine, Date, Integer
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
@@ -22,8 +22,8 @@ class Movie(db.Model):
   __tablename__ = 'Movie'
 
   id = Column(Integer, primary_key=True)
-  title = Column(String)
-  release_date = Column(String)
+  title = Column(String, nullable=False)
+  release_date = Column(Date, nullable=False)
 
   def __init__(self, title, release_date=""):
     self.title = title
@@ -34,3 +34,23 @@ class Movie(db.Model):
       'id': self.id,
       'title': self.title,
       'release_date': self.release_date}
+
+class Actor(db.Model):  
+  __tablename__ = 'Movie'
+
+  id = Column(Integer, primary_key=True)
+  name = Column(String, nullable=False)
+  age = Column(Integer, nullable=False)
+  gender = Column(String, nullable=False)
+
+  def __init__(self, name, age="", gender):
+    self.name = name
+    self.age = age
+    self.gender = gender
+
+  def format(self):
+    return {
+      'id': self.id,
+      'name': self.name,
+      'age': self.age,
+      'gender': self.gender}
