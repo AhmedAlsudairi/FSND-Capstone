@@ -24,6 +24,7 @@ class Movie(db.Model):
   id = Column(Integer, primary_key=True)
   title = Column(String, nullable=False)
   release_date = Column(Date, nullable=False)
+  roles = db.relationship('Role', backref = db.backref('movie', lazy=True))
 
   def __init__(self, title, release_date=""):
     self.title = title
@@ -36,12 +37,13 @@ class Movie(db.Model):
       'release_date': self.release_date}
 
 class Actor(db.Model):  
-  __tablename__ = 'Movie'
+  __tablename__ = 'Actor'
 
   id = Column(Integer, primary_key=True)
   name = Column(String, nullable=False)
   age = Column(Integer, nullable=False)
   gender = Column(String, nullable=False)
+  roles = db.relationship('Role', backref = db.backref('actor', lazy=True))
 
   def __init__(self, name, age="", gender):
     self.name = name
@@ -54,3 +56,23 @@ class Actor(db.Model):
       'name': self.name,
       'age': self.age,
       'gender': self.gender}
+
+
+class Role(db.Model):  
+  __tablename__ = 'Role'
+
+  movie_id = Column(Integer, db.ForeignKey('Movie.id'), primary_key=True)
+  actor_id = Column(Integer, db.ForeignKey('Actor.id'), primary_key=False)
+  name = Column(String, nullable=False)
+
+
+  def __init__(self, movie_id, actor_id, name=""):
+    self.movie_id = movie_id
+    self.actor_id = actor_id
+    self.name = name
+
+  def format(self):
+    return {
+      'movie_id': self.movie_id,
+      'actor_id': self.actor_id,
+      'name': self.name}
