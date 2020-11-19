@@ -10,6 +10,8 @@ db = SQLAlchemy()
 setup_db(app)
     binds a flask application and a SQLAlchemy service
 '''
+
+
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -18,61 +20,92 @@ def setup_db(app, database_path=database_path):
     db.create_all()
 
 
-class Movie(db.Model):  
-  __tablename__ = 'Movie'
+class Movie(db.Model):
+    __tablename__ = 'Movie'
 
-  id = Column(Integer, primary_key=True)
-  title = Column(String, nullable=False)
-  release_date = Column(Date, nullable=False)
-  roles = db.relationship('Role', backref = db.backref('movie', lazy=True))
+    id = Column(Integer, primary_key=True)
+    title = Column(String, nullable=False)
+    release_date = Column(Date, nullable=False)
+    roles = db.relationship('Role', backref=db.backref('movie', lazy=True))
 
-  def __init__(self, title, release_date=""):
-    self.title = title
-    self.release_date = release_date
+    def __init__(self, title, release_date=""):
+        self.title = title
+        self.release_date = release_date
 
-  def format(self):
-    return {
-      'id': self.id,
-      'title': self.title,
-      'release_date': self.release_date}
+    def format(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'release_date': self.release_date}
 
-class Actor(db.Model):  
-  __tablename__ = 'Actor'
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
-  id = Column(Integer, primary_key=True)
-  name = Column(String, nullable=False)
-  age = Column(Integer, nullable=False)
-  gender = Column(String, nullable=False)
-  roles = db.relationship('Role', backref = db.backref('actor', lazy=True))
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
-  def __init__(self, name, age="", gender):
-    self.name = name
-    self.age = age
-    self.gender = gender
+    def update(self):
+        db.session.commit()        
 
-  def format(self):
-    return {
-      'id': self.id,
-      'name': self.name,
-      'age': self.age,
-      'gender': self.gender}
+class Actor(db.Model):
+    __tablename__ = 'Actor'
 
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    age = Column(Integer, nullable=False)
+    gender = Column(String, nullable=False)
+    roles = db.relationship('Role', backref=db.backref('actor', lazy=True))
 
-class Role(db.Model):  
-  __tablename__ = 'Role'
+    def __init__(self, name, age="", gender):
+        self.name = name
+        self.age = age
+        self.gender = gender
 
-  movie_id = Column(Integer, db.ForeignKey('Movie.id'), primary_key=True)
-  actor_id = Column(Integer, db.ForeignKey('Actor.id'), primary_key=False)
-  name = Column(String, nullable=False)
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'gender': self.gender}
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
-  def __init__(self, movie_id, actor_id, name=""):
-    self.movie_id = movie_id
-    self.actor_id = actor_id
-    self.name = name
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def update(self):
+        db.session.commit()    
 
-  def format(self):
-    return {
-      'movie_id': self.movie_id,
-      'actor_id': self.actor_id,
-      'name': self.name}
+class Role(db.Model):
+    __tablename__ = 'Role'
+
+    movie_id = Column(Integer, db.ForeignKey('Movie.id'), primary_key=True)
+    actor_id = Column(Integer, db.ForeignKey('Actor.id'), primary_key=False)
+    name = Column(String, nullable=False)
+
+    def __init__(self, movie_id, actor_id, name=""):
+        self.movie_id = movie_id
+        self.actor_id = actor_id
+        self.name = name
+
+    def format(self):
+        return {
+            'movie_id': self.movie_id,
+            'actor_id': self.actor_id,
+            'name': self.name}
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def update(self):
+        db.session.commit()    
