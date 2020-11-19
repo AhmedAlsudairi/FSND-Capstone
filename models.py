@@ -58,7 +58,7 @@ class Actor(db.Model):
     gender = Column(String, nullable=False)
     roles = db.relationship('Role', backref=db.backref('actor', lazy=True))
 
-    def __init__(self, name, age="", gender):
+    def __init__(self, name, gender, age=""):
         self.name = name
         self.age = age
         self.gender = gender
