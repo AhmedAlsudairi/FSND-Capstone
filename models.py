@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, create_engine, Date, Integer
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
-database_path = "postgres://postgres:admin@localhost:5432/casting_agency"
+database_path = "postgres://cbqtrgconsrcct:281c3d25888c88e2a8ce66dd8030abe622d6cb349d0e3bc971f2495983185883@ec2-52-5-176-53.compute-1.amazonaws.com:5432/d30725h9f6sdpf"
 
 db = SQLAlchemy()
 
