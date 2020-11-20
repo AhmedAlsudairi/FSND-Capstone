@@ -13,14 +13,11 @@ def create_app(test_config=None):
 
 app = create_app()
 
-# @app.route('/movies', methods=['GET'])
-# def get_drinks():
-#     drinks = Drink.query.all()
-#     formatedDrinks = [drink.short() for drink in drinks]
-#     return jsonify({
-#         'success': True,
-#         'drinks': formatedDrinks
-#     }), 200
+@app.route('/movies', methods=['GET'])
+def get_drinks():
+    return jsonify({
+        'success': True,
+    }), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
