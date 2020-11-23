@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, create_engine, Date, Integer
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
-database_path = os.environ['HEROKU_POSTGRESQL_GREEN_URL']
+database_path = os.environ['DATABASE_URL']
 
 db = SQLAlchemy()
 
