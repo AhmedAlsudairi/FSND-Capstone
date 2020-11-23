@@ -13,11 +13,18 @@ def create_app(test_config=None):
 
 app = create_app()
 
-@app.route('/movies', methods=['GET'])
-def get_drinks():
-    return jsonify({
-        'success': True,
-    }), 200
+@app.route('/actors', methods=['GET'])
+def get_actors():
+     try:
+        actors = Actor.query.order_by(Actor.id).all()
+        formated_actors = [actor.format() for actor in actors]
+        print(formated_actors)
+        return jsonify({
+          "success" : True,
+          "categories" : formated_actors
+        })
+      except: 
+        abort(422)  
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
