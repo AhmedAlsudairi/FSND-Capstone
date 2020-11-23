@@ -77,6 +77,18 @@ def get_movies():
     except:
         abort(422)
 
+@app.route('/movies/<int:movie_id>', methods=['DELETE'])
+def delete_movie(movie_id):
+    try:
+            query = Movie.query.get(movie_id)
+            query.delete()
+            return jsonify({
+                "success": True,
+                "deleted": movie_id,
+              "total_movies": len(Movie.query.all())
+            })
+    except:
+            abort(404)
 
 @app.route('/movies', methods=['POST'])
 def post_movie():
