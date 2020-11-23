@@ -108,6 +108,30 @@ def post_movie():
     except:
         abort(400)
 
+  @app.errorhandler(422)
+  def unprocessable_entity(error):
+    return jsonify({
+      "success" : False,
+      "status_code" : 422,
+      "message" : "Unprocessable Entity"
+    }), 422
 
+  @app.errorhandler(404)
+  def not_found(error):
+    return jsonify({
+      "success" : False,
+      "status_code" : 404,
+      "message" : "Not Found"
+    }), 404  
+
+  @app.errorhandler(400)
+  def bad_request(error):
+    return jsonify({
+      "success" : False,
+      "status_code" : 400,
+      "message" : "Bad Request"
+    }), 400  
+
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
