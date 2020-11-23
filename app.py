@@ -30,6 +30,20 @@ def get_actors():
         abort(422)
 
 
+@app.route('/actors/<int:actor_id>', methods=['DELETE'])
+def delete_actor(actor_id):
+    try:
+            query = Actor.query.get(actor_id)
+            query.delete()
+            return jsonify({
+                "success": True,
+                "deleted": actor_id,
+              "total_actors": len(Actor.query.all())
+            })
+    except:
+            abort(404)
+
+
 @app.route('/actors', methods=['POST'])
 def post_actor():
     try:
@@ -62,6 +76,7 @@ def get_movies():
         })
     except:
         abort(422)
+
 
 @app.route('/movies', methods=['POST'])
 def post_movie():
