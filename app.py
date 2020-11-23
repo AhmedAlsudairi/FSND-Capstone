@@ -15,16 +15,29 @@ app = create_app()
 
 @app.route('/actors', methods=['GET'])
 def get_actors():
-     try:
+    try:
         actors = Actor.query.order_by(Actor.id).all()
         formated_actors = [actor.format() for actor in actors]
         print(formated_actors)
         return jsonify({
           "success" : True,
-          "categories" : formated_actors
+          "actors" : formated_actors
         })
-      except: 
+    except:
         abort(422)  
+
+@app.route('/movies', methods=['GET'])
+def get_movies():
+    try:
+        movies = Movie.query.order_by(Movie.id).all()
+        formated_movies = [movie.format() for movie in movies]
+        print(formated_movies)
+        return jsonify({
+          "success" : True,
+          "movies" : formated_movies
+        })
+    except:
+        abort(422)          
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
