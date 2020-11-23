@@ -39,7 +39,6 @@ def post_actor():
         age = body['age']
         gender = body['gender']
         actor = Actor(name=name, gender=gender, age=age)
-        print(actor.name)
         actor.insert()
 
         return jsonify({
@@ -63,6 +62,24 @@ def get_movies():
         })
     except:
         abort(422)
+
+@app.route('/movies', methods=['POST'])
+def post_movie():
+    try:
+        body = request.get_json()
+
+        title = body['title']
+        release_date = body['release_date']
+        movie = Movie(title=title, release_date=release_date)
+        movie.insert()
+
+        return jsonify({
+            "success": True,
+            "created": movie.id,
+            "total_movies": len(Movie.query.all())
+        })
+    except:
+        abort(400)
 
 
 if __name__ == '__main__':
