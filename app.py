@@ -147,6 +147,38 @@ def post_movie():
     except:
         abort(400)
 
+@app.route('/movies/<int:movie_id>', methods=['PATCH'])
+def update_movie(movie_id):
+    data = request.get_json()
+    title = data.get('title', None)
+    release_date = data.get('release_date', None)
+    try:
+        movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
+        if movie is None:
+            abort(404)
+
+        if title is None:
+            abort(400)
+
+        if title is not None:
+            movie.title = title
+
+        if release_date is not None:
+            movie.release_date = release_date
+
+
+        movie.update()
+
+        movies = Movie.query.order_by(Movie.id).all()
+        formated_movies = [movie.format() for movie in movies]
+
+        return jsonify({
+            'success': True,
+            'movies': formated_movies
+        }), 200
+    except:
+        abort(422)
+
 @app.errorhandler(422)
 def unprocessable_entity(error):
     return jsonify({
