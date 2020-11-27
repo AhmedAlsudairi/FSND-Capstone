@@ -64,18 +64,56 @@ def post_actor():
         abort(400)
 
 
+@app.route('/actors/<int:actor_id>', methods=['PATCH'])
+def update_actor(actor_id):
+    data = request.get_json()
+    name = data.get('name', None)
+    age = data.get('age', None)
+    gender = data.get('gender', None)
+    try:
+        actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
+        if actor is None:
+            abort(404)
+
+        if name is None:
+            abort(400)
+
+        if name is not None:
+            actor.name = name
+
+        if age is not None:
+            actor.age = age
+
+        if gender is not None:
+            actor.gender = gender
+        print(actor.name)
+        print(actor.age)
+        print(actor.gender)
+        actor.update()
+
+        actors = Actor.query.order_by(Actor.id).all()
+        formated_actors = [actor.format() for actor in actors]
+
+        return jsonify({
+            'success': True,
+            'actors': formated_actors
+        }), 200
+    except:
+        abort(422)
+
 @app.route('/movies', methods=['GET'])
 def get_movies():
     try:
-        movies = Movie.query.order_by(Movie.id).all()
-        formated_movies = [movie.format() for movie in movies]
-        print(formated_movies)
-        return jsonify({
-            "success": True,
-            "movies": formated_movies
-        })
+            movies = Movie.query.order_by(Movie.id).all()
+            formated_movies = [movie.format() for movie in movies]
+            print(formated_movies)
+            return jsonify({
+                "success": True,
+                "movies": formated_movies
+            })
     except:
         abort(422)
+
 
 @app.route('/movies/<int:movie_id>', methods=['DELETE'])
 def delete_movie(movie_id):
@@ -89,6 +127,7 @@ def delete_movie(movie_id):
             })
     except:
             abort(404)
+
 
 @app.route('/movies', methods=['POST'])
 def post_movie():
@@ -108,24 +147,24 @@ def post_movie():
     except:
         abort(400)
 
-  @app.errorhandler(422)
-  def unprocessable_entity(error):
+@app.errorhandler(422)
+def unprocessable_entity(error):
     return jsonify({
       "success" : False,
       "status_code" : 422,
       "message" : "Unprocessable Entity"
     }), 422
 
-  @app.errorhandler(404)
-  def not_found(error):
+@app.errorhandler(404)
+def not_found(error):
     return jsonify({
       "success" : False,
       "status_code" : 404,
       "message" : "Not Found"
     }), 404  
 
-  @app.errorhandler(400)
-  def bad_request(error):
+@app.errorhandler(400)
+def bad_request(error):
     return jsonify({
       "success" : False,
       "status_code" : 400,
