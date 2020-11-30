@@ -18,7 +18,7 @@ app = create_app()
 
 @app.route('/actors', methods=['GET'])
 @requires_auth('get:actors')
-def get_actors():
+def get_actors(payload):
     try:
         actors = Actor.query.order_by(Actor.id).all()
         formated_actors = [actor.format() for actor in actors]
@@ -33,7 +33,7 @@ def get_actors():
 
 @app.route('/actors/<int:actor_id>', methods=['DELETE'])
 @requires_auth('delete:actors')
-def delete_actor(actor_id):
+def delete_actor(payload,actor_id):
     try:
             query = Actor.query.get(actor_id)
             query.delete()
@@ -48,7 +48,7 @@ def delete_actor(actor_id):
 
 @app.route('/actors', methods=['POST'])
 @requires_auth('post:actors')
-def post_actor():
+def post_actor(payload):
     try:
         body = request.get_json()
 
@@ -69,7 +69,7 @@ def post_actor():
 
 @app.route('/actors/<int:actor_id>', methods=['PATCH'])
 @requires_auth('patch:actors')
-def update_actor(actor_id):
+def update_actor(payload,actor_id):
     data = request.get_json()
     name = data.get('name', None)
     age = data.get('age', None)
@@ -105,7 +105,7 @@ def update_actor(actor_id):
 
 @app.route('/movies', methods=['GET'])
 @requires_auth('get:movies')
-def get_movies():
+def get_movies(payload):
     try:
             movies = Movie.query.order_by(Movie.id).all()
             formated_movies = [movie.format() for movie in movies]
@@ -120,7 +120,7 @@ def get_movies():
 
 @app.route('/movies/<int:movie_id>', methods=['DELETE'])
 @requires_auth('delete:movies')
-def delete_movie(movie_id):
+def delete_movie(payload,movie_id):
     try:
             query = Movie.query.get(movie_id)
             query.delete()
@@ -135,7 +135,7 @@ def delete_movie(movie_id):
 
 @app.route('/movies', methods=['POST'])
 @requires_auth('post:movies')
-def post_movie():
+def post_movie(payload):
     try:
         body = request.get_json()
 
@@ -154,7 +154,7 @@ def post_movie():
 
 @app.route('/movies/<int:movie_id>', methods=['PATCH'])
 @requires_auth('patch:movies')
-def update_movie(movie_id):
+def update_movie(payload,movie_id):
     data = request.get_json()
     title = data.get('title', None)
     release_date = data.get('release_date', None)
