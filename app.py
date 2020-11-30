@@ -3,7 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import setup_db, Movie, Actor, Role
-
+from auth import AuthError, requires_auth
 
 def create_app(test_config=None):
     # create and configure the app
@@ -17,6 +17,7 @@ app = create_app()
 
 
 @app.route('/actors', methods=['GET'])
+@requires_auth('get:actors')
 def get_actors():
     try:
         actors = Actor.query.order_by(Actor.id).all()
@@ -31,6 +32,7 @@ def get_actors():
 
 
 @app.route('/actors/<int:actor_id>', methods=['DELETE'])
+@requires_auth('delete:actors')
 def delete_actor(actor_id):
     try:
             query = Actor.query.get(actor_id)
@@ -45,6 +47,7 @@ def delete_actor(actor_id):
 
 
 @app.route('/actors', methods=['POST'])
+@requires_auth('post:actors')
 def post_actor():
     try:
         body = request.get_json()
@@ -65,6 +68,7 @@ def post_actor():
 
 
 @app.route('/actors/<int:actor_id>', methods=['PATCH'])
+@requires_auth('patch:actors')
 def update_actor(actor_id):
     data = request.get_json()
     name = data.get('name', None)
@@ -86,9 +90,7 @@ def update_actor(actor_id):
 
         if gender is not None:
             actor.gender = gender
-        print(actor.name)
-        print(actor.age)
-        print(actor.gender)
+            
         actor.update()
 
         actors = Actor.query.order_by(Actor.id).all()
@@ -102,6 +104,7 @@ def update_actor(actor_id):
         abort(422)
 
 @app.route('/movies', methods=['GET'])
+@requires_auth('get:movies')
 def get_movies():
     try:
             movies = Movie.query.order_by(Movie.id).all()
@@ -116,6 +119,7 @@ def get_movies():
 
 
 @app.route('/movies/<int:movie_id>', methods=['DELETE'])
+@requires_auth('delete:movies')
 def delete_movie(movie_id):
     try:
             query = Movie.query.get(movie_id)
@@ -130,6 +134,7 @@ def delete_movie(movie_id):
 
 
 @app.route('/movies', methods=['POST'])
+@requires_auth('post:movies')
 def post_movie():
     try:
         body = request.get_json()
@@ -148,6 +153,7 @@ def post_movie():
         abort(400)
 
 @app.route('/movies/<int:movie_id>', methods=['PATCH'])
+@requires_auth('patch:movies')
 def update_movie(movie_id):
     data = request.get_json()
     title = data.get('title', None)
