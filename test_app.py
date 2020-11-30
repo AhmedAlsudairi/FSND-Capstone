@@ -5,9 +5,12 @@ from flask_sqlalchemy import SQLAlchemy
 from app import create_app
 from models import setup_db, Actor, Movie
 
-
+CASTING_ASSISTANCE = ''
+EXECUTIVE_PRODUCER_TOKEN = ''
+CASTING_DIRECTOR_TOKEN = ''
 class CastingAgencyTestCase(unittest.TestCase):
     """This class represents the casting agency test case"""
+
 
     def setUp(self):
         """Define test variables and initialize app."""
@@ -40,25 +43,32 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'],True)
         self.assertTrue(len(data['actors']))
 
+    def test_get_actors_error(self):
+        response = self.client().get('/actors?page=500', headers={"Authorization": f"{CASTING_ASSISTANCE}"})
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code,400)
+        self.assertEqual(data['success'],False)
+        self.assertTrue(data['message'],"Not Found")
 
     def test_get_movies(self):
-        response = self.client().get('/movies', , headers={"Authorization": f"{CASTING_ASSISTANCE}"})
+        response = self.client().get('/movies', headers={"Authorization": f"{CASTING_ASSISTANCE}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code,200)
         self.assertEqual(data['success'],True)
         self.assertTrue(len(data['actors']))
 
-    def test_get_actors_error(self):
-        response = self.client().get('/actors?page=500', , headers={"Authorization": f"{CASTING_ASSISTANCE}"})
+    def test_get_movies_error(self):
+        response = self.client().get('/movies?page=500', headers={"Authorization": f"{CASTING_ASSISTANCE}"})
         data = json.loads(response.data)
 
-        self.assertEqual(response.status_code,422)
+        self.assertEqual(response.status_code,400)
         self.assertEqual(data['success'],False)
         self.assertTrue(data['message'],"Not Found")
 
     def test_delete_actor(self):
-        response = self.client().delete('/actors/1')
+        response = self.client().delete('/actors/1', headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         actor = Actor.query.get(1)
@@ -69,30 +79,51 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['total_actors'])
         self.assertEqual(actor, None)
 
-    # def test_404_if_question_does_not_exist(self):
-    #     response = self.client().delete('/questions/1000')
-    #     data = json.loads(response.data)
+    def test_delete_actor_error(self):
+        response = self.client().delete('/actors/1000', headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        data = json.loads(response.data)
 
-    #     self.assertEqual(response.status_code,404)
-    #     self.assertEqual(data['success'],False)
-    #     self.assertTrue(data['message'],"Not Found")
+        self.assertEqual(response.status_code,404)
+        self.assertEqual(data['success'],False)
+        self.assertTrue(data['message'],"Not Found")
 
-    # def test_post_question(self):
-    #     response = self.client().post('/questions', json={'question': ' Which England footballer was famously never given a yellow card?', 'answer' : 'Gary Lineker', 'difficulty' : 3, 'category' : 1})
-    #     data = json.loads(response.data)
+    def test_delete_movie(self):
+        response = self.client().delete('/movies/1', headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN }"})
+        data = json.loads(response.data)
 
-    #     self.assertEqual(response.status_code,200)
-    #     self.assertEqual(data['success'],True)
-    #     self.assertTrue(data['created'])
-    #     self.assertTrue(data['total_questions'])
+        movie = Actor.query.get(1)
 
-    # def test_400_if_post_question_bad_request(self):
-    #     response = self.client().post('/questions', json={'q': ' Which England footballer was famously never given a yellow card?', 'a' : 'Gary Lineker', 'd' : 3, 'c' : 1})
-    #     data = json.loads(response.data)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['success'],True)
+        self.assertEqual(data['deleted'],1)
+        self.assertTrue(data['total_movies'])
+        self.assertEqual(movie, None)
 
-    #     self.assertEqual(response.status_code,400)
-    #     self.assertEqual(data['success'],False)
-    #     self.assertTrue(data['message'],"Bad Request")
+    def test_delete_movie_error(self):
+        response = self.client().delete('/movies/1000', headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code,404)
+        self.assertEqual(data['success'],False)
+        self.assertTrue(data['message'],"Not Found")
+
+    def test_post_actor(self):
+        response = self.client().post('/actors', json={'name': 'Ahmed', 'age' : '22', 'gender' : 'male'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['success'],True)
+        self.assertTrue(data['created'])
+        self.assertTrue(data['total_actors'])
+
+    def test_post_actor_error(self):
+        response = self.client().post('/actors', json={'firstName': 'Ahmed', 'age' : '22', 'gender' : 'male'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code,400)
+        self.assertEqual(data['success'],False)
+        self.assertTrue(data['message'],"Bad Request")
+
 
     # def test_search_question(self):
     #     response = self.client().post('/questions/search', json={'searchTerm': 'which'})
