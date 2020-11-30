@@ -33,7 +33,7 @@ class CastingAgencyTestCase(unittest.TestCase):
     Write at least one test for each test for successful operation and for expected errors.
     """
     def test_get_actors(self):
-        response = self.client().get('/actors')
+        response = self.client().get('/actors', headers={"Authorization": f"{CASTING_ASSISTANCE}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code,200)
@@ -42,32 +42,32 @@ class CastingAgencyTestCase(unittest.TestCase):
 
 
     def test_get_movies(self):
-        response = self.client().get('/movies')
+        response = self.client().get('/movies', , headers={"Authorization": f"{CASTING_ASSISTANCE}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code,200)
         self.assertEqual(data['success'],True)
         self.assertTrue(len(data['actors']))
 
-    # def test_422_sent_requesting_beyond_valid_pages(self):
-    #     response = self.client().get('/questions?page=500')
-    #     data = json.loads(response.data)
+    def test_get_actors_error(self):
+        response = self.client().get('/actors?page=500', , headers={"Authorization": f"{CASTING_ASSISTANCE}"})
+        data = json.loads(response.data)
 
-    #     self.assertEqual(response.status_code,422)
-    #     self.assertEqual(data['success'],False)
-    #     self.assertTrue(data['message'],"Not Found")
+        self.assertEqual(response.status_code,422)
+        self.assertEqual(data['success'],False)
+        self.assertTrue(data['message'],"Not Found")
 
-    # def test_delete_question(self):
-    #     response = self.client().delete('/questions/1')
-    #     data = json.loads(response.data)
+    def test_delete_actor(self):
+        response = self.client().delete('/actors/1')
+        data = json.loads(response.data)
 
-    #     question = Question.query.get(1)
+        actor = Actor.query.get(1)
 
-    #     self.assertEqual(response.status_code,200)
-    #     self.assertEqual(data['success'],True)
-    #     self.assertEqual(data['deleted'],1)
-    #     self.assertTrue(data['total_questions'])
-    #     self.assertEqual(question, None)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['success'],True)
+        self.assertEqual(data['deleted'],1)
+        self.assertTrue(data['total_actors'])
+        self.assertEqual(actor, None)
 
     # def test_404_if_question_does_not_exist(self):
     #     response = self.client().delete('/questions/1000')
