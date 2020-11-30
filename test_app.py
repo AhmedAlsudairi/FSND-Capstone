@@ -196,68 +196,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(data['success'], False)
         self.assertTrue(data['message'], "Bad Request")
-        
-    # def test_search_question(self):
-    #     response = self.client().post('/questions/search', json={'searchTerm': 'which'})
-    #     data = json.loads(response.data)
 
-    #     self.assertEqual(response.status_code,200)
-    #     self.assertEqual(data['success'],True)
-    #     self.assertTrue(len(data['questions']))
-    #     self.assertTrue(data['total_questions'])
-    #     self.assertEqual(data['current_category'],None)
-
-    # def test_400_if_search_question_bad_request(self):
-    #     response = self.client().post('/questions/search', json={'search': 'which'})
-    #     data = json.loads(response.data)
-
-    #     self.assertEqual(response.status_code,400)
-    #     self.assertEqual(data['success'],False)
-    #     self.assertTrue(data['message'],"Bad Request")
-
-    # def test_get_questions_by_category(self):
-    #     response = self.client().get('/categories/1/questions')
-    #     data = json.loads(response.data)
-    #     category = Category.query.get(1)
-
-    #     self.assertEqual(response.status_code,200)
-    #     self.assertEqual(data['success'],True)
-    #     self.assertTrue(len(data['questions']))
-    #     self.assertTrue(data['total_questions'])
-    #     self.assertEqual(data['current_category'],category.type)
-
-    # def test_404_sent_requesting_beyond_valid_categories(self):
-    #     response = self.client().get('/categories/1000/questions')
-    #     data = json.loads(response.data)
-
-    #     self.assertEqual(response.status_code,404)
-    #     self.assertEqual(data['success'],False)
-    #     self.assertTrue(data['message'],"Not Found")
-
-    # def test_get_question_quizzes(self):
-    #     category = Category.query.get(4)
-    #     questions = Question.query.filter_by(category=category.id).all()
-
-    #     previous_questions = [question.id for question in questions]
-
-    #     response = self.client().post('/quizzes', json={"quiz_category": category.format(), "previous_questions": previous_questions})
-    #     data = json.loads(response.data)
-
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-
-    # def test_400_get_question_quizzes_bad_request(self):
-    #     category = Category.query.get(4)
-    #     questions = Question.query.filter_by(category=category.id).all()
-
-    #     previous_questions = [question.id for question in questions]
-
-    #     response = self.client().post('/quizzes', json={"category": category.format(), "questions": previous_questions})
-    #     data = json.loads(response.data)
-
-    #     self.assertEqual(response.status_code,400)
-    #     self.assertEqual(data['success'],False)
-    #     self.assertTrue(data['message'],"Bad Request")
+    
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()

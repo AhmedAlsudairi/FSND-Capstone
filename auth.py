@@ -5,9 +5,9 @@ from jose import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = 'fsnd-ahmed.eu.auth0.com'
+AUTH0_DOMAIN = 'fsnd-ahmed-alsudairi.us.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'drinks'
+API_AUDIENCE = 'casting _agency'
 
 # AuthError Exception
 '''
@@ -79,7 +79,7 @@ def check_permissions(permission, payload):
 
 def verify_decode_jwt(token):
     # GET THE PUBLIC KEY FROM AUTH0
-    jsonurl = urlopen(f'https://fsnd-ahmed.eu.auth0.com/.well-known/jwks.json')
+    jsonurl = urlopen(f'https://fsnd-ahmed-alsudairi.us.auth0.com/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
 
     # GET THE DATA IN THE HEADER
@@ -112,7 +112,7 @@ def verify_decode_jwt(token):
                 rsa_key,
                 algorithms=ALGORITHMS,
                 audience=API_AUDIENCE,
-                issuer='https://' + 'fsnd-ahmed.eu.auth0.com' + '/'
+                issuer='https://' + 'fsnd-ahmed-alsudairi.us.auth0.com' + '/'
             )
 
             return payload
