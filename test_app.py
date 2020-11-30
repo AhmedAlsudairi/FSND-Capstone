@@ -124,7 +124,23 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'],False)
         self.assertTrue(data['message'],"Bad Request")
 
+    def test_post_movie(self):
+        response = self.client().post('/movies', json={'title': 'Toy Story', 'release_date' : '11-11-2020'}, headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        data = json.loads(response.data)
 
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['success'],True)
+        self.assertTrue(data['created'])
+        self.assertTrue(data['total_movies'])
+
+    def test_post_movie_error(self):
+        response = self.client().post('/movies', json={'movieTitle': 'Toy Story', 'release_date' : '11-11-2020'}, headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        data = json.loads(response.data)
+
+        self.assertEqual(response.status_code,400)
+        self.assertEqual(data['success'],False)
+        self.assertTrue(data['message'],"Bad Request")
+        
     # def test_search_question(self):
     #     response = self.client().post('/questions/search', json={'searchTerm': 'which'})
     #     data = json.loads(response.data)
