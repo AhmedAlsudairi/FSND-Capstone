@@ -232,6 +232,13 @@ def forbidden(error):
         "message": "Forbidden"
     }), 403
 
+@app.errorhandler(405)
+def forbidden(error):
+    return jsonify({
+        "success": False,
+        "error": 405,
+        "message": "Method not allowed"
+    }), 405
 
 @app.errorhandler(AuthError)
 def authentication_error(error):
