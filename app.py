@@ -5,6 +5,7 @@ from flask_cors import CORS
 from models import setup_db, Movie, Actor, Role
 from auth import AuthError, requires_auth
 
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
@@ -27,23 +28,23 @@ def get_actors(payload):
             "success": True,
             "actors": formated_actors
         })
-    except:
+    except BaseException:
         abort(422)
 
 
 @app.route('/actors/<int:actor_id>', methods=['DELETE'])
 @requires_auth('delete:actors')
-def delete_actor(payload,actor_id):
+def delete_actor(payload, actor_id):
     try:
-            query = Actor.query.get(actor_id)
-            query.delete()
-            return jsonify({
-                "success": True,
-                "deleted": actor_id,
-              "total_actors": len(Actor.query.all())
-            })
-    except:
-            abort(404)
+        query = Actor.query.get(actor_id)
+        query.delete()
+        return jsonify({
+            "success": True,
+            "deleted": actor_id,
+            "total_actors": len(Actor.query.all())
+        })
+    except BaseException:
+        abort(404)
 
 
 @app.route('/actors', methods=['POST'])
@@ -63,13 +64,13 @@ def post_actor(payload):
             "created": actor.id,
             "total_actors": len(Actor.query.all())
         })
-    except:
+    except BaseException:
         abort(400)
 
 
 @app.route('/actors/<int:actor_id>', methods=['PATCH'])
 @requires_auth('patch:actors')
-def update_actor(payload,actor_id):
+def update_actor(payload, actor_id):
     data = request.get_json()
     name = data.get('name', None)
     age = data.get('age', None)
@@ -90,7 +91,7 @@ def update_actor(payload,actor_id):
 
         if gender is not None:
             actor.gender = gender
-            
+
         actor.update()
 
         actors = Actor.query.order_by(Actor.id).all()
@@ -100,37 +101,38 @@ def update_actor(payload,actor_id):
             'success': True,
             'actors': formated_actors
         }), 200
-    except:
+    except BaseException:
         abort(422)
+
 
 @app.route('/movies', methods=['GET'])
 @requires_auth('get:movies')
 def get_movies(payload):
     try:
-            movies = Movie.query.order_by(Movie.id).all()
-            formated_movies = [movie.format() for movie in movies]
-            print(formated_movies)
-            return jsonify({
-                "success": True,
-                "movies": formated_movies
-            })
-    except:
+        movies = Movie.query.order_by(Movie.id).all()
+        formated_movies = [movie.format() for movie in movies]
+        print(formated_movies)
+        return jsonify({
+            "success": True,
+            "movies": formated_movies
+        })
+    except BaseException:
         abort(422)
 
 
 @app.route('/movies/<int:movie_id>', methods=['DELETE'])
 @requires_auth('delete:movies')
-def delete_movie(payload,movie_id):
+def delete_movie(payload, movie_id):
     try:
-            query = Movie.query.get(movie_id)
-            query.delete()
-            return jsonify({
-                "success": True,
-                "deleted": movie_id,
-              "total_movies": len(Movie.query.all())
-            })
-    except:
-            abort(404)
+        query = Movie.query.get(movie_id)
+        query.delete()
+        return jsonify({
+            "success": True,
+            "deleted": movie_id,
+            "total_movies": len(Movie.query.all())
+        })
+    except BaseException:
+        abort(404)
 
 
 @app.route('/movies', methods=['POST'])
@@ -149,12 +151,13 @@ def post_movie(payload):
             "created": movie.id,
             "total_movies": len(Movie.query.all())
         })
-    except:
+    except BaseException:
         abort(400)
+
 
 @app.route('/movies/<int:movie_id>', methods=['PATCH'])
 @requires_auth('patch:movies')
-def update_movie(payload,movie_id):
+def update_movie(payload, movie_id):
     data = request.get_json()
     title = data.get('title', None)
     release_date = data.get('release_date', None)
@@ -172,7 +175,6 @@ def update_movie(payload,movie_id):
         if release_date is not None:
             movie.release_date = release_date
 
-
         movie.update()
 
         movies = Movie.query.order_by(Movie.id).all()
@@ -182,32 +184,36 @@ def update_movie(payload,movie_id):
             'success': True,
             'movies': formated_movies
         }), 200
-    except:
+    except BaseException:
         abort(422)
+
 
 @app.errorhandler(422)
 def unprocessable_entity(error):
     return jsonify({
-      "success" : False,
-      "status_code" : 422,
-      "message" : "Unprocessable Entity"
+        "success": False,
+        "status_code": 422,
+        "message": "Unprocessable Entity"
     }), 422
+
 
 @app.errorhandler(404)
 def not_found(error):
     return jsonify({
-      "success" : False,
-      "status_code" : 404,
-      "message" : "Not Found"
-    }), 404  
+        "success": False,
+        "status_code": 404,
+        "message": "Not Found"
+    }), 404
+
 
 @app.errorhandler(400)
 def bad_request(error):
     return jsonify({
-      "success" : False,
-      "status_code" : 400,
-      "message" : "Bad Request"
-    }), 400  
+        "success": False,
+        "status_code": 400,
+        "message": "Bad Request"
+    }), 400
+
 
 @app.errorhandler(401)
 def unauthorized(error):
@@ -226,6 +232,7 @@ def forbidden(error):
         "message": "Forbidden"
     }), 403
 
+
 @app.errorhandler(AuthError)
 def authentication_error(error):
 
@@ -234,6 +241,8 @@ def authentication_error(error):
         "error": error.status_code,
         "message": error.error['description'],
         "code": error.error['code']
-    }), error.status_code    
+    }), error.status_code
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

@@ -47,7 +47,8 @@ class Movie(db.Model):
         db.session.commit()
 
     def update(self):
-        db.session.commit()        
+        db.session.commit()
+
 
 class Actor(db.Model):
     __tablename__ = 'Actor'
@@ -77,9 +78,10 @@ class Actor(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-        
+
     def update(self):
-        db.session.commit()    
+        db.session.commit()
+
 
 class Role(db.Model):
     __tablename__ = 'Role'
@@ -106,6 +108,6 @@ class Role(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-        
+
     def update(self):
-        db.session.commit()    
+        db.session.commit()

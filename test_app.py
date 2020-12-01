@@ -44,8 +44,8 @@ class CastingAgencyTestCase(unittest.TestCase):
     """
 
     def test_get_actors(self):
-        response = self.client().get(
-            '/actors', headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
+        response = self.client().get('/actors',
+                                     headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
         print(response.data)
         data = json.loads(response.data)
 
@@ -54,8 +54,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(len(data['actors']))
 
     def test_get_actors_error(self):
-        response = self.client().get(
-            '/actors?page=500', headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
+        response = self.client().get('/actors?page=500',
+                                     headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 400)
@@ -63,8 +63,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Not Found")
 
     def test_get_movies(self):
-        response = self.client().get(
-            '/movies', headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
+        response = self.client().get('/movies',
+                                     headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -72,8 +72,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(len(data['actors']))
 
     def test_get_movies_error(self):
-        response = self.client().get(
-            '/movies?page=500', headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
+        response = self.client().get('/movies?page=500',
+                                     headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 400)
@@ -81,8 +81,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Not Found")
 
     def test_delete_actor(self):
-        response = self.client().delete(
-            '/actors/1', headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().delete('/actors/1',
+                                        headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         actor = Actor.query.get(1)
@@ -94,8 +94,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(actor, None)
 
     def test_delete_actor_error(self):
-        response = self.client().delete(
-            '/actors/1000', headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().delete('/actors/1000',
+                                        headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 404)
@@ -103,8 +103,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Not Found")
 
     def test_delete_movie(self):
-        response = self.client().delete(
-            '/movies/1', headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        response = self.client().delete('/movies/1',
+                                        headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
         data = json.loads(response.data)
 
         movie = Actor.query.get(1)
@@ -116,8 +116,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(movie, None)
 
     def test_delete_movie_error(self):
-        response = self.client().delete(
-            '/movies/1000', headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        response = self.client().delete('/movies/1000',
+                                        headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 404)
@@ -125,8 +125,14 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Not Found")
 
     def test_post_actor(self):
-        response = self.client().post('/actors',
-                                      json={'name': 'Ahmed', 'age': 22, 'gender': 'male'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().post(
+            '/actors',
+            json={
+                'name': 'Ahmed',
+                'age': 22,
+                'gender': 'male'},
+            headers={
+                "Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -135,8 +141,14 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['total_actors'])
 
     def test_post_actor_error(self):
-        response = self.client().post('/actors',
-                                      json={'firstName': 'Ahmed', 'age': 22, 'gender': 'male'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().post(
+            '/actors',
+            json={
+                'firstName': 'Ahmed',
+                'age': 22,
+                'gender': 'male'},
+            headers={
+                "Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 400)
@@ -144,8 +156,13 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Bad Request")
 
     def test_post_movie(self):
-        response = self.client().post('/movies',
-                                      json={'title': 'Toy Story', 'release_date': '2020-12-12'}, headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        response = self.client().post(
+            '/movies',
+            json={
+                'title': 'Toy Story',
+                'release_date': '2020-12-12'},
+            headers={
+                "Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -154,8 +171,13 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['total_movies'])
 
     def test_post_movie_error(self):
-        response = self.client().post('/movies',
-                                      json={'movieTitle': 'Toy Story', 'release_date': '2020-12-12'}, headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        response = self.client().post(
+            '/movies',
+            json={
+                'movieTitle': 'Toy Story',
+                'release_date': '2020-12-12'},
+            headers={
+                "Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 400)
@@ -163,8 +185,14 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Bad Request")
 
     def test_patch_actor(self):
-        response = self.client().patch('/actors/1',
-                                       json={'name': 'Saleh', 'age': 45, 'gender': 'male'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().patch(
+            '/actors/1',
+            json={
+                'name': 'Saleh',
+                'age': 45,
+                'gender': 'male'},
+            headers={
+                "Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -172,8 +200,14 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(len(data['actors']))
 
     def test_patch_actor_error(self):
-        response = self.client().patch('/actors/1',
-                                       json={'firstName': 'Saleh', 'age': 45, 'gender': 'male'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().patch(
+            '/actors/1',
+            json={
+                'firstName': 'Saleh',
+                'age': 45,
+                'gender': 'male'},
+            headers={
+                "Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 400)
@@ -181,8 +215,13 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Bad Request")
 
     def test_patch_movie(self):
-        response = self.client().patch('/movies/1',
-                                       json={'title': 'Toy Story', 'release_date': '2020-12-12'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().patch(
+            '/movies/1',
+            json={
+                'title': 'Toy Story',
+                'release_date': '2020-12-12'},
+            headers={
+                "Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -190,8 +229,13 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(len(data['movies']))
 
     def test_patch_movie_error(self):
-        response = self.client().patch('/movies/1',
-                                       json={'movieTitle': 'Toy Story', 'release_date': '2020-12-12'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().patch(
+            '/movies/1',
+            json={
+                'movieTitle': 'Toy Story',
+                'release_date': '2020-12-12'},
+            headers={
+                "Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 400)
@@ -199,8 +243,8 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Bad Request")
 
     def test_casting_assistant(self):
-        response = self.client().get(
-            '/actors', headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
+        response = self.client().get('/actors',
+                                     headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
         print(response.data)
         data = json.loads(response.data)
 
@@ -209,8 +253,13 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(len(data['actors']))
 
     def test_casting_assistant_error(self):
-        response = self.client().post('/movies',
-                                      json={'title': 'Toy Story', 'release_date': '2020-12-12'}, headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
+        response = self.client().post(
+            '/movies',
+            json={
+                'title': 'Toy Story',
+                'release_date': '2020-12-12'},
+            headers={
+                "Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -218,8 +267,14 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Unauthorized")
 
     def test_casting_director(self):
-        response = self.client().post('/actors',
-                                      json={'name': 'Ahmed', 'age': 22, 'gender': 'male'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().post(
+            '/actors',
+            json={
+                'name': 'Ahmed',
+                'age': 22,
+                'gender': 'male'},
+            headers={
+                "Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -228,8 +283,13 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['total_actors'])
 
     def test_casting_director_error(self):
-        response = self.client().post('/movies',
-                                      json={'title': 'Toy Story', 'release_date': '2020-12-12'}, headers={"Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
+        response = self.client().post(
+            '/movies',
+            json={
+                'title': 'Toy Story',
+                'release_date': '2020-12-12'},
+            headers={
+                "Authorization": f"{CASTING_DIRECTOR_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
@@ -237,8 +297,13 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['message'], "Unauthorized")
 
     def test_executive_producer(self):
-        response = self.client().post('/movies',
-                                      json={'title': 'Toy Story', 'release_date': '2020-12-12'}, headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        response = self.client().post(
+            '/movies',
+            json={
+                'title': 'Toy Story',
+                'release_date': '2020-12-12'},
+            headers={
+                "Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -247,13 +312,20 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['total_movies'])
 
     def test_executive_producer_error(self):
-        response = self.client().post('/actors',
-                                      json={'name': 'Ahmed', 'age': 22, 'gender': 'male'}, headers={"Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        response = self.client().post(
+            '/actors',
+            json={
+                'name': 'Ahmed',
+                'age': 22,
+                'gender': 'male'},
+            headers={
+                "Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 401)
         self.assertEqual(data['success'], False)
         self.assertTrue(data['message'], "Unauthorized")
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
