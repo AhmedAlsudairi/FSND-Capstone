@@ -57,9 +57,9 @@ Setting the `FLASK_APP` variable to `app.py` directs flask to find the flask app
 
 This API provide 8 endpoints for casting agency website. The endpoints cover all basic opearations on the database, get, delete, post, and update on actors and movies of the casting agency. 
 
-### URL
+### Base URL
 
-This API is hosted in localhost https://fsnd-capstone-ahmed.herokuapp.com/ .
+This API is hosted in https://fsnd-capstone-ahmed.herokuapp.com/ .
 
 ### Roles:
 1. Casting Assistant:
@@ -74,7 +74,7 @@ Modify actors or movies
 All permissions a Casting Director has and…
 Add or delete a movie from the database
 
-### Roles Tokens:
+### Roles Tokens (Authintication):
 1. Casting Assistant: ```eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImV1N0FSUGxQUVZDRlRpYlFGUkllSSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYWhtZWQtYWxzdWRhaXJpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmM1MmEwNTYxZjllNzAwNzY4OTdmNzciLCJhdWQiOiJjYXN0aW5nIF9hZ2VuY3kiLCJpYXQiOjE2MDY4NDg2ODUsImV4cCI6MTYwNjkzNTA4NSwiYXpwIjoiTE5mMFNQMGxkU3BOaUhLdVNRam94OHl4bFY1RmhMcVMiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.lffBxvuYUBFa7dRGd-HnoIqCNwBgUQZyRf8tIT4Tz_dx_uESF2NyaIaiPu-4NngVB_qvYzN_2JigX8hLxHRYjWaRfdHJObBL0c2DlJVWyNF0Grvpovs4EFgIsuvj_9R_1F_6GZToXbIWyksnaf5StO3Xf_cRCu5t-bk6dPxh-us1D2Ox4ebueBKlKLF2KXVtVT8xqwkdJUgyQz6UZmLUDcBDK1lTLVE85q6xxUKNet8FIIHudwktyUKxZ5L7fAzBtbHY7J-JDG5P-syVFUvR0sKd7Em37sH-Xxt-FudYICSr6KZh0j3skOXroxhtHxA6MqgXkPeIAlkfDSxo_27QTg```
 
 2. Casting Director:
