@@ -7,7 +7,7 @@ from models import setup_db, Actor, Movie
 
 CASTING_ASSISTANCE_TOKEN = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImV1N0FSUGxQUVZDRlRpYlFGUkllSSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYWhtZWQtYWxzdWRhaXJpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmM1MmEwNTYxZjllNzAwNzY4OTdmNzciLCJhdWQiOiJjYXN0aW5nIF9hZ2VuY3kiLCJpYXQiOjE2MDY4NDg2ODUsImV4cCI6MTYwNjkzNTA4NSwiYXpwIjoiTE5mMFNQMGxkU3BOaUhLdVNRam94OHl4bFY1RmhMcVMiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.lffBxvuYUBFa7dRGd-HnoIqCNwBgUQZyRf8tIT4Tz_dx_uESF2NyaIaiPu-4NngVB_qvYzN_2JigX8hLxHRYjWaRfdHJObBL0c2DlJVWyNF0Grvpovs4EFgIsuvj_9R_1F_6GZToXbIWyksnaf5StO3Xf_cRCu5t-bk6dPxh-us1D2Ox4ebueBKlKLF2KXVtVT8xqwkdJUgyQz6UZmLUDcBDK1lTLVE85q6xxUKNet8FIIHudwktyUKxZ5L7fAzBtbHY7J-JDG5P-syVFUvR0sKd7Em37sH-Xxt-FudYICSr6KZh0j3skOXroxhtHxA6MqgXkPeIAlkfDSxo_27QTg'
 CASTING_DIRECTOR_TOKEN = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImV1N0FSUGxQUVZDRlRpYlFGUkllSSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYWhtZWQtYWxzdWRhaXJpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmM1MmEzNGIzMjhjOTAwNjk1N2FhODMiLCJhdWQiOiJjYXN0aW5nIF9hZ2VuY3kiLCJpYXQiOjE2MDY4NDkyODgsImV4cCI6MTYwNjkzNTY4OCwiYXpwIjoiTE5mMFNQMGxkU3BOaUhLdVNRam94OHl4bFY1RmhMcVMiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIl19.nR_QMzTOr80fXFFAaqtjxR912-WHFqzuMAPKikXps5HGZqCd2SpyHsbh9SYpLED_hVTjOdA9Prf-2D7VBk0194O69ShFalNh-8-ZbToYYq7wLhWgWmdcplndvbWwkzXmaI5DThk1Yn05Es47AxPQfnzNPiSBoqGwY3XHTfhCso41byByYcNR4fOGxuXyQSTeSTdxLkjJTMMoBUGyfOgMPVZdLPsOJ7DwSDnACV_1CIZGWXCmeBS9l9GdCWb6U3Lwa4v4CKbXyHzdlO_ryfdBVvlGIpwFoe5XFY9ssNgE7IfVxpnYTHw2s7jiOhg_cOd8MAv4wEk1Z-zej-bulKZuVg'
-EXECUTIVE_PRODUCER_TOKEN = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImV1N0FSUGxQUVZDRlRpYlFGUkllSSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYWhtZWQtYWxzdWRhaXJpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmM1MmE0Y2QxZjM2ZTAwNzY3ZWE3OTIiLCJhdWQiOiJjYXN0aW5nIF9hZ2VuY3kiLCJpYXQiOjE2MDY3NjExMDAsImV4cCI6MTYwNjg0NzUwMCwiYXpwIjoiTE5mMFNQMGxkU3BOaUhLdVNRam94OHl4bFY1RmhMcVMiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBvc3Q6bW92aWVzIl19.uSRaJXHvIjuG3Ot_VkTDrhNKpEVRIjBz9kLmq43jTqHhCac0cXP1ewTvNdohY95iFBb7zf19QnWuXljDs1z07DqQpxVuEOSwekSRd2cCjVK_YVk7DbyWFzAiI0iUr2iommiEyIor3xQixUofewg3sJgKfF2hKUMEet--8j6CCrNOrvdg1V-6OjEDRXb0QimBtujHVDWkTcW0Ev0iMtgWyoQeWcVQBZYlpRh3lCvjBRMskJW7ctHT6eHn0b8xdO6FIxlCeUEUDQZmI0qyHf176LYf8ljlyBZnDBHZGEjYBeIfjrtW3u4l_ZvsTz318UvKHQ-H2Atn7d_AdiDNWA_lRQ'
+EXECUTIVE_PRODUCER_TOKEN = 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImV1N0FSUGxQUVZDRlRpYlFGUkllSSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtYWhtZWQtYWxzdWRhaXJpLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZmM1MmE0Y2QxZjM2ZTAwNzY3ZWE3OTIiLCJhdWQiOiJjYXN0aW5nIF9hZ2VuY3kiLCJpYXQiOjE2MDY4NTU2MzksImV4cCI6MTYwNjk0MjAzOSwiYXpwIjoiTE5mMFNQMGxkU3BOaUhLdVNRam94OHl4bFY1RmhMcVMiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.2lR3Yv6whNJcP5rUjrXjcZ05rIKSfosS1bMOMiB61oBXw9ROWbQ5X54hnrIWx-YBQQZ_hHwMdpPKbA2Q6mBigtADw3dvywhiJOnWzmgri6cfHcHISkKhEngvw5czi1j_u7GhJAvOScWw_DaU3D9sQ5QL66R1dcRmJcPLfnsURLWWHze_RWQ86BKHQ92eeHYdRW0thK3ENBx0qWZQK-dLXYDi9J4L03nPxRgZQPR4zuwK88c-Njdv1hMbsKhXdwPrdT8AXtRJZmP3FldF1Nmd_k_ZGQ_BaWFKmHPyHCX1xdsHCdIkeyitCx8Hm090EUc7aFn_lg7H-bvp_DaHCjxItQ'
 
 
 class CastingAgencyTestCase(unittest.TestCase):
@@ -46,7 +46,6 @@ class CastingAgencyTestCase(unittest.TestCase):
     def test_get_actors(self):
         response = self.client().get('/actors',
                                      headers={"Authorization": f"{CASTING_ASSISTANCE_TOKEN}"})
-        print(response.data)
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
@@ -311,7 +310,21 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertTrue(data['created'])
         self.assertTrue(data['total_movies'])
 
+    def second_test_executive_producer(self):
+        response = self.client().post(
+            '/actors',
+            json={
+                'name': 'Ahmed',
+                'age': 22,
+                'gender': 'male'},
+            headers={
+                "Authorization": f"{EXECUTIVE_PRODUCER_TOKEN}"})
+        data = json.loads(response.data)
 
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['created'])
+        self.assertTrue(data['total_actors'])
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()
