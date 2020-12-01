@@ -3,7 +3,7 @@ FSND-Capstone is the final project of Udacity's Full Stack Web Developer Nanodeg
 
 ## Motivation
 This project aims to cover all concepts that we study in this nanodegree program, so it is a great opportunity to review all the concepts by practicing this project.
-# Full Stack Trivia API Backend
+
 
 ## Getting Started
 
@@ -58,7 +58,7 @@ Setting the `FLASK_APP` variable to `app.py` directs flask to find the flask app
 
 This API provide 8 endpoints for casting agency website. The endpoints cover all basic opearations on the database, get, delete, post, and update on actors and movies of the casting agency. 
 
-### Getting started
+### URL
 
 This API is hosted in localhost https://fsnd-capstone-ahmed.herokuapp.com/ .
 
