@@ -1,14 +1,79 @@
 # FSND-Capstone
 FSND-Capstone is the final project of Udacity's Full Stack Web Developer Nanodegree.
+
+## Motivation
+This project aims to cover all concepts that we study in this nanodegree program, so it is a great opportunity to review all the concepts by practicing this project.
+# Full Stack Trivia API Backend
+
+## Getting Started
+
+### Installing Dependencies
+
+#### Python 3.7
+
+Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
+
+#### Virtual Enviornment
+
+We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+
+#### PIP Dependencies
+
+Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
+
+```bash
+pip install -r requirements.txt
+```
+
+This will install all of the required packages we selected within the `requirements.txt` file.
+
+##### Key Dependencies
+
+- [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. Flask is required to handle requests and responses.
+
+- [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use handle the lightweight sqlite database. You'll primarily work in app.py and can reference models.py. 
+
+- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross origin requests from our frontend server. 
+
+## Running the server
+
+From within the `backend` directory first ensure you are working using your created virtual environment.
+
+To run the server, execute:
+
+```bash
+export FLASK_APP=app.py
+export FLASK_ENV=development
+flask run
+```
+
+Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
+
+Setting the `FLASK_APP` variable to `app.py` directs flask to find the flask application. 
+
+
 ## API Documention
 
 ### Introduction
 
-This API serve trivia react app which allow the user to browse through avaliable questions, search for question, filter questions by category, post new question, and play quiz for specific category.
+This API provide 8 endpoints for casting agency website. The endpoints cover all basic opearations on the database, get, delete, post, and update on actors and movies of the casting agency. 
 
 ### Getting started
 
 This API is hosted in localhost https://fsnd-capstone-ahmed.herokuapp.com/ .
+
+### Roles:
+1. Casting Assistant:
+Can view actors and movies
+
+2. Casting Director:
+All permissions a Casting Assistant has and…
+Add or delete an actor from the database
+Modify actors or movies
+
+3. Executive Producer:
+All permissions a Casting Director has and…
+Add or delete a movie from the database
 
 ### Error
 
@@ -156,3 +221,12 @@ Response: ```{
     ],
     "success": true
 }```
+
+## Testing
+To run the tests, run
+```
+dropdb trivia_test
+createdb trivia_test
+psql trivia_test < trivia.psql
+python test_flaskr.py
+```
